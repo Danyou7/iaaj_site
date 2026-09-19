@@ -1,0 +1,20 @@
+const jwt = require('jsonwebtoken');
+
+const authMiddleware = (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'Akses ditolak. Token tidak ditemukan.' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    
+    req.admin = decoded; // add admin info to request
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Token tidak valid atau kadaluarsa.' });
+  }
+};
+
+module.exports = authMiddleware;
