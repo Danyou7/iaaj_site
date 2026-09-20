@@ -138,7 +138,7 @@ export const NewsDetail: React.FC = () => {
 
                 {/* Full Article Body */}
                 <div className="text-sm sm:text-base text-on-surface leading-relaxed space-y-5 font-sans">
-                  {article.content.split('\n\n').map((paragraph, index) => (
+                  {article.content.split('\n\n').map((paragraph: string, index: number) => (
                     <p key={index} className="leading-relaxed">
                       {paragraph}
                     </p>
