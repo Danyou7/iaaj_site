@@ -26,6 +26,12 @@ export const AdminDashboard: React.FC = () => {
   const [heroPreviews, setHeroPreviews] = useState<string[]>(['', '', '', '']);
   const [savingHero, setSavingHero] = useState(false);
 
+  const [aboutImageFile, setAboutImageFile] = useState<File | null>(null);
+  const [aboutImagePreview, setAboutImagePreview] = useState<string>('');
+  
+  const [careerImageFile, setCareerImageFile] = useState<File | null>(null);
+  const [careerImagePreview, setCareerImagePreview] = useState<string>('');
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUser');
@@ -53,8 +59,29 @@ export const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleSectionImageChange = (type: 'about' | 'career', e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 1 * 1024 * 1024) {
+        alert('Ukuran gambar maksimal 1 MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (type === 'about') {
+          setAboutImageFile(file);
+          setAboutImagePreview(reader.result as string);
+        } else {
+          setCareerImageFile(file);
+          setCareerImagePreview(reader.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const saveHeroSettings = async () => {
-    const hasFiles = heroFiles.some(f => f !== null);
+    const hasFiles = heroFiles.some(f => f !== null) || aboutImageFile || careerImageFile;
     if (!hasFiles) {
       alert('Pilih setidaknya 1 gambar baru untuk diunggah.');
       return;
@@ -69,8 +96,10 @@ export const AdminDashboard: React.FC = () => {
           formData.append('images', file);
         }
       });
+      if (aboutImageFile) formData.append('aboutImage', aboutImageFile);
+      if (careerImageFile) formData.append('careerImage', careerImageFile);
 
-      const res = await fetch('http://localhost:5000/api/settings/hero', {
+      const res = await fetch('/api/settings/hero', {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -271,6 +300,58 @@ export const AdminDashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
+              
+              <div className="mt-8 border-t border-border-subtle pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-display font-bold text-primary mb-2 flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4 text-secondary" />
+                    Gambar Tentang IAAJ (Kanan)
+                  </h4>
+                  <p className="text-[11px] text-on-surface-variant mb-3">
+                    Rekomendasi 800x600 px. Maks 1 MB.
+                  </p>
+                  <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-border-subtle rounded-xl hover:bg-surface hover:border-primary transition-colors cursor-pointer group relative overflow-hidden">
+                    {aboutImagePreview ? (
+                      <img src={aboutImagePreview} alt="Tentang IAAJ" className="w-full h-full object-cover" />
+                    ) : (
+                      <>
+                        <div className="w-8 h-8 rounded-full bg-surface-variant group-hover:bg-primary/10 text-primary flex items-center justify-center mb-2">
+                          <Upload className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] text-outline group-hover:text-primary font-medium text-center px-2">
+                          Klik untuk unggah<br/>(Max 1MB)
+                        </span>
+                      </>
+                    )}
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSectionImageChange('about', e)} />
+                  </label>
+                </div>
+                <div>
+                  <h4 className="text-sm font-display font-bold text-primary mb-2 flex items-center gap-2">
+                    <ImageIcon className="w-4 h-4 text-secondary" />
+                    Gambar Peluang Karir (Kiri)
+                  </h4>
+                  <p className="text-[11px] text-on-surface-variant mb-3">
+                    Rekomendasi 800x600 px. Maks 1 MB.
+                  </p>
+                  <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-border-subtle rounded-xl hover:bg-surface hover:border-primary transition-colors cursor-pointer group relative overflow-hidden">
+                    {careerImagePreview ? (
+                      <img src={careerImagePreview} alt="Peluang Karir" className="w-full h-full object-cover" />
+                    ) : (
+                      <>
+                        <div className="w-8 h-8 rounded-full bg-surface-variant group-hover:bg-primary/10 text-primary flex items-center justify-center mb-2">
+                          <Upload className="w-4 h-4" />
+                        </div>
+                        <span className="text-[11px] text-outline group-hover:text-primary font-medium text-center px-2">
+                          Klik untuk unggah<br/>(Max 1MB)
+                        </span>
+                      </>
+                    )}
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => handleSectionImageChange('career', e)} />
+                  </label>
+                </div>
+              </div>
+
               <div className="mt-6 flex justify-end">
                 <button 
                   onClick={saveHeroSettings}

@@ -31,7 +31,7 @@ export const AdminNews: React.FC = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:5000/api/news', {
+      const res = await fetch('/api/news', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -70,7 +70,7 @@ export const AdminNews: React.FC = () => {
     
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:5000/api/news/${id}`, {
+      const res = await fetch(`/api/news/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -99,7 +99,7 @@ export const AdminNews: React.FC = () => {
         formData.append('thumbnailImage', imageFile);
       }
 
-      const res = await fetch('http://localhost:5000/api/news', {
+      const res = await fetch('/api/news', {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
@@ -175,7 +175,7 @@ export const AdminNews: React.FC = () => {
                         <td className="p-4 flex items-center gap-3">
                           {art.thumbnailImage ? (
                             <img
-                              src={`http://localhost:5000${art.thumbnailImage}`}
+                              src={`${art.thumbnailImage}`}
                               alt={art.title}
                               className="w-12 h-12 rounded-lg object-cover border border-border-subtle"
                             />

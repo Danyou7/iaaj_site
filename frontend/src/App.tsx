@@ -12,6 +12,7 @@ import { Jobs } from './pages/Jobs';
 import { News } from './pages/News';
 import { NewsDetail } from './pages/NewsDetail';
 import { Contact } from './pages/Contact';
+import { DocumentExtension } from './pages/DocumentExtension';
 
 // Admin Pages
 import { Login } from './pages/admin/Login';
@@ -51,6 +52,7 @@ const AppContent: React.FC = () => {
           <Route path="/loker" element={<Jobs />} />
           <Route path="/berita" element={<News />} />
           <Route path="/berita/:id" element={<NewsDetail />} />
+          <Route path="/perpanjang-dokumen" element={<DocumentExtension />} />
           <Route path="/hubungi-kami" element={<Contact />} />
 
           {/* Admin Auth Route */}

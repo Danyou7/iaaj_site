@@ -28,13 +28,13 @@ export const NewsDetail: React.FC = () => {
       try {
         setLoading(true);
         // Fetch article by ID
-        const articleRes = await fetch(`http://localhost:5000/api/news/${id}`);
+        const articleRes = await fetch(`/api/news/${id}`);
         if (!articleRes.ok) throw new Error('Not found');
         const articleData = await articleRes.json();
         setArticle(articleData);
 
         // Fetch all news for related articles
-        const allRes = await fetch('http://localhost:5000/api/news');
+        const allRes = await fetch('/api/news');
         if (allRes.ok) {
           const allData = await allRes.json();
           setRelatedArticles(allData.filter((a: any) => a._id !== id).slice(0, 2));
@@ -129,7 +129,7 @@ export const NewsDetail: React.FC = () => {
                 {article.thumbnailImage && (
                   <div className="rounded-2xl overflow-hidden shadow-level1 my-6 border border-border-subtle">
                     <img
-                      src={`http://localhost:5000${article.thumbnailImage}`}
+                      src={`${article.thumbnailImage}`}
                       alt={article.title}
                       className="w-full h-auto max-h-[480px] object-cover"
                     />
@@ -138,7 +138,7 @@ export const NewsDetail: React.FC = () => {
 
                 {/* Full Article Body */}
                 <div className="text-sm sm:text-base text-on-surface leading-relaxed space-y-5 font-sans">
-                  {article.content.split('\n\n').map((paragraph, index) => (
+                  {article.content.split('\n\n').map((paragraph: string, index: number) => (
                     <p key={index} className="leading-relaxed">
                       {paragraph}
                     </p>
@@ -207,7 +207,7 @@ export const NewsDetail: React.FC = () => {
                     <div key={rel._id} className="group flex gap-3">
                       {rel.thumbnailImage && (
                         <img
-                          src={`http://localhost:5000${rel.thumbnailImage}`}
+                          src={`${rel.thumbnailImage}`}
                           alt={rel.title}
                           className="w-20 h-20 rounded-xl object-cover shrink-0 border border-border-subtle"
                         />

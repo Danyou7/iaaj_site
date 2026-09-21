@@ -13,7 +13,7 @@ export const News: React.FC = () => {
   const categories = ['Semua', 'Pengumuman', 'Acara', 'Karir', 'Prestasi'];
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/news')
+    fetch('/api/news')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -104,7 +104,7 @@ export const News: React.FC = () => {
               <div className="lg:col-span-7 h-72 lg:h-auto relative overflow-hidden bg-surface-variant">
                 {featured.thumbnailImage && (
                   <img
-                    src={`http://localhost:5000${featured.thumbnailImage}`}
+                    src={`${featured.thumbnailImage}`}
                     alt={featured.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
@@ -172,7 +172,7 @@ export const News: React.FC = () => {
                     <div className="relative h-48 overflow-hidden bg-surface-variant">
                       {article.thumbnailImage && (
                         <img
-                          src={`http://localhost:5000${article.thumbnailImage}`}
+                          src={`${article.thumbnailImage}`}
                           alt={article.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

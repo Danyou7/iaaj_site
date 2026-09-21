@@ -49,7 +49,7 @@ export const AdminAlumni: React.FC = () => {
 
   const fetchAlumni = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/alumni?status=approved');
+      const response = await fetch('/api/alumni?status=approved');
       if (response.ok) {
         const data = await response.json();
         const mappedData = data.map((item: any) => ({
@@ -78,7 +78,7 @@ export const AdminAlumni: React.FC = () => {
     if (confirm('Yakin ingin menghapus data alumni ini dari database?')) {
       try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`http://localhost:5000/api/alumni/${id}`, {
+        const response = await fetch(`/api/alumni/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -98,7 +98,7 @@ export const AdminAlumni: React.FC = () => {
   const handleAddSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/alumni', {
+      const response = await fetch('/api/alumni', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -137,7 +137,7 @@ export const AdminAlumni: React.FC = () => {
     if (!editingId) return;
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await fetch(`http://localhost:5000/api/alumni/${editingId}`, {
+      const response = await fetch(`/api/alumni/${editingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ export const AdminAlumni: React.FC = () => {
             status: 'approved'
           };
           if (mappedItem.name) {
-            const res = await fetch('http://localhost:5000/api/alumni', {
+            const res = await fetch('/api/alumni', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(mappedItem)

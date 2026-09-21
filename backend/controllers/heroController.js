@@ -21,8 +21,18 @@ const updateHeroSettings = async (req, res) => {
     
     // Process uploaded images
     let newImages = [];
-    if (req.files && req.files.length > 0) {
-      newImages = req.files.map(file => `/uploads/${file.filename}`);
+    if (req.files && req.files.images && req.files.images.length > 0) {
+      newImages = req.files.images.map(file => `/uploads/${file.filename}`);
+    }
+    
+    let newAboutImage = '';
+    if (req.files && req.files.aboutImage && req.files.aboutImage.length > 0) {
+      newAboutImage = `/uploads/${req.files.aboutImage[0].filename}`;
+    }
+
+    let newCareerImage = '';
+    if (req.files && req.files.careerImage && req.files.careerImage.length > 0) {
+      newCareerImage = `/uploads/${req.files.careerImage[0].filename}`;
     }
 
     let settings = await HeroSetting.findOne({ identifier: 'main' });
@@ -37,6 +47,8 @@ const updateHeroSettings = async (req, res) => {
     settings.headline = headline || settings.headline;
     settings.subheadline = subheadline || settings.subheadline;
     settings.images = imagesToSave;
+    if (newAboutImage) settings.aboutImage = newAboutImage;
+    if (newCareerImage) settings.careerImage = newCareerImage;
 
     await settings.save();
 

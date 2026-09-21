@@ -23,7 +23,7 @@ export const AdminJobs: React.FC = () => {
   });
   const fetchJobs = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/jobs');
+      const response = await fetch('/api/jobs');
       if (response.ok) {
         const data = await response.json();
         const mappedData = data.map((item: any) => ({
@@ -46,7 +46,7 @@ export const AdminJobs: React.FC = () => {
     if (confirm('Hapus lowongan kerja ini?')) {
       try {
         const token = localStorage.getItem('adminToken');
-        const response = await fetch(`http://localhost:5000/api/jobs/${id}`, {
+        const response = await fetch(`/api/jobs/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -103,8 +103,8 @@ export const AdminJobs: React.FC = () => {
       }
 
       const url = editingJobId 
-        ? `http://localhost:5000/api/jobs/${editingJobId}`
-        : 'http://localhost:5000/api/jobs';
+        ? `/api/jobs/${editingJobId}`
+        : '/api/jobs';
       
       const method = editingJobId ? 'PUT' : 'POST';
 

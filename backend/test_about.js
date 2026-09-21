@@ -2,7 +2,7 @@ const fs = require('fs');
 
 async function runTest() {
   try {
-    const loginRes = await fetch('http://localhost:5000/api/auth/login', {
+    const loginRes = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: 'admin', password: 'admin123' })
@@ -18,7 +18,7 @@ async function runTest() {
     const blob = new Blob(['dummy content'], { type: 'image/jpeg' });
     formData.append('historyImage', blob, 'test.jpg');
 
-    const response = await fetch('http://localhost:5000/api/settings/about', {
+    const response = await fetch('/api/settings/about', {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`

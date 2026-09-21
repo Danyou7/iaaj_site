@@ -27,12 +27,14 @@ export const Home: React.FC = () => {
       "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1920&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1920&auto=format&fit=crop"
-    ]
+    ],
+    aboutImage: '',
+    careerImage: ''
   });
 
   useEffect(() => {
     // Fetch News
-    fetch('http://localhost:5000/api/news')
+    fetch('/api/news')
       .then(res => res.json())
       .then(data => {
         if(Array.isArray(data)) setNews(data);
@@ -43,7 +45,7 @@ export const Home: React.FC = () => {
     // Wait, in hero routes, GET is protected by authMiddleware! We should use a public endpoint or bypass auth for GET.
     // Actually, I'll just check if I can fetch it, if not I'll fall back to default.)
     const token = localStorage.getItem('adminToken');
-    fetch('http://localhost:5000/api/settings/hero', {
+    fetch('/api/settings/hero', {
       headers: token ? { Authorization: `Bearer ${token}` } : {}
     })
       .then(res => res.json())
@@ -55,8 +57,10 @@ export const Home: React.FC = () => {
             headline: data.headline,
             subheadline: data.subheadline,
             images: data.images && data.images.length > 0 
-              ? data.images.map((img: string) => `http://localhost:5000${img}`) 
-              : heroSettings.images
+              ? data.images.map((img: string) => `${img}`) 
+              : heroSettings.images,
+            aboutImage: data.aboutImage || '',
+            careerImage: data.careerImage || ''
           });
         }
       })
@@ -144,44 +148,78 @@ export const Home: React.FC = () => {
 
       {/* 2. SECTION: TENTANG KAMI */}
       <section className="py-16 sm:py-20 bg-surface">
-        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter text-left">
-          <div className="max-w-3xl mr-auto">
-            <div className="w-16 h-16 rounded-2xl bg-primary-fixed text-primary flex items-center justify-center mb-6">
-              <Building2 className="w-8 h-8" />
+        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-left">
+              <div className="w-16 h-16 rounded-2xl bg-primary-fixed text-primary flex items-center justify-center mb-6">
+                <Building2 className="w-8 h-8" />
+              </div>
+              <h2 className="text-3xl font-display font-bold text-primary mb-4">{t('home.about.title')}</h2>
+              <p className="text-on-surface-variant text-lg leading-relaxed mb-8">
+                {t('home.about.desc')}
+              </p>
+              <Link
+                to="/tentang-kami"
+                className="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-white font-display font-bold px-8 py-4 rounded-xl transition-all shadow-md hover:-translate-y-0.5"
+              >
+                <span>{t('home.about.btn')}</span>
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </div>
-            <h2 className="text-3xl font-display font-bold text-primary mb-4">{t('home.about.title')}</h2>
-            <p className="text-on-surface-variant text-lg leading-relaxed mb-8">
-              {t('home.about.desc')}
-            </p>
-            <Link
-              to="/tentang-kami"
-              className="inline-flex items-center gap-2 bg-primary hover:bg-primary-container text-white font-display font-bold px-8 py-4 rounded-xl transition-all shadow-md hover:-translate-y-0.5"
-            >
-              <span>{t('home.about.btn')}</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+            
+            {/* Image Space - Kanan */}
+            {heroSettings.aboutImage ? (
+              <div className="rounded-2xl overflow-hidden shadow-xl">
+                <img src={heroSettings.aboutImage} alt="Tentang IAAJ" className="w-full h-auto object-cover max-h-[500px]" />
+              </div>
+            ) : (
+              <div className="rounded-2xl bg-surface-variant flex items-center justify-center h-64 sm:h-80 lg:h-full min-h-[300px]">
+                <span className="text-on-surface-variant/50 flex flex-col items-center gap-2">
+                  <Building2 className="w-10 h-10" />
+                  Space Gambar Tentang IAAJ
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       {/* 3. SECTION: PELUANG KARIR */}
       <section className="py-16 sm:py-20 bg-surface-lowest border-t border-border-subtle">
-        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter text-right">
-          <div className="max-w-3xl ml-auto flex flex-col items-end">
-            <div className="w-16 h-16 rounded-2xl bg-secondary-fixed text-secondary flex items-center justify-center mb-6">
-              <Briefcase className="w-8 h-8" />
+        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            
+            {/* Image Space - Kiri */}
+            {heroSettings.careerImage ? (
+              <div className="rounded-2xl overflow-hidden shadow-xl order-last lg:order-first">
+                <img src={heroSettings.careerImage} alt="Peluang Karir" className="w-full h-auto object-cover max-h-[500px]" />
+              </div>
+            ) : (
+              <div className="rounded-2xl bg-surface-variant flex items-center justify-center h-64 sm:h-80 lg:h-full min-h-[300px] order-last lg:order-first">
+                <span className="text-on-surface-variant/50 flex flex-col items-center gap-2">
+                  <Briefcase className="w-10 h-10" />
+                  Space Gambar Peluang Karir
+                </span>
+              </div>
+            )}
+            
+            <div className="text-right flex flex-col items-end">
+              <div className="w-16 h-16 rounded-2xl bg-secondary-fixed text-secondary flex items-center justify-center mb-6">
+                <Briefcase className="w-8 h-8" />
+              </div>
+              <h2 className="text-3xl font-display font-bold text-primary mb-4">{t('home.jobs.title')}</h2>
+              <p className="text-on-surface-variant text-lg leading-relaxed mb-8 max-w-xl">
+                {t('home.jobs.desc')}
+              </p>
+              <Link
+                to="/loker"
+                className="inline-flex items-center gap-2 bg-secondary-container hover:bg-secondary-fixed text-primary font-display font-bold px-8 py-4 rounded-xl transition-all shadow-md hover:-translate-y-0.5"
+              >
+                <span>{t('home.jobs.btn')}</span>
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </div>
-            <h2 className="text-3xl font-display font-bold text-primary mb-4">{t('home.jobs.title')}</h2>
-            <p className="text-on-surface-variant text-lg leading-relaxed mb-8">
-              {t('home.jobs.desc')}
-            </p>
-            <Link
-              to="/loker"
-              className="inline-flex items-center gap-2 bg-secondary-container hover:bg-secondary-fixed text-primary font-display font-bold px-8 py-4 rounded-xl transition-all shadow-md hover:-translate-y-0.5"
-            >
-              <span>{t('home.jobs.btn')}</span>
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+
           </div>
         </div>
       </section>
@@ -240,7 +278,7 @@ export const Home: React.FC = () => {
                 <div className="relative h-64 sm:h-72 overflow-hidden bg-surface-variant">
                   {featuredNews.thumbnailImage && (
                     <img
-                      src={`http://localhost:5000${featuredNews.thumbnailImage}`}
+                      src={`${featuredNews.thumbnailImage}`}
                       alt={featuredNews.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
@@ -288,7 +326,7 @@ export const Home: React.FC = () => {
                     <div className="sm:w-2/5 h-48 sm:h-auto overflow-hidden shrink-0 bg-surface-variant">
                       {newsItem.thumbnailImage && (
                         <img
-                          src={`http://localhost:5000${newsItem.thumbnailImage}`}
+                          src={`${newsItem.thumbnailImage}`}
                           alt={newsItem.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

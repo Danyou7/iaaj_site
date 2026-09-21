@@ -8,7 +8,8 @@ exports.getAboutSettings = async (req, res) => {
     if (!settings) {
       settings = await About.create({
         historyImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
-        members: []
+        members: [],
+        advisors: []
       });
     }
     res.json(settings);
@@ -25,7 +26,8 @@ exports.updateAboutSettings = async (req, res) => {
     if (!settings) {
       settings = await About.create({
         historyImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
-        members: []
+        members: [],
+        advisors: []
       });
     }
 
@@ -34,7 +36,15 @@ exports.updateAboutSettings = async (req, res) => {
       try {
         updates.members = JSON.parse(req.body.members);
       } catch (e) {
-        updates.members = req.body.members; // in case it's already an array
+        updates.members = req.body.members;
+      }
+    }
+
+    if (req.body.advisors) {
+      try {
+        updates.advisors = JSON.parse(req.body.advisors);
+      } catch (e) {
+        updates.advisors = req.body.advisors;
       }
     }
 
@@ -53,6 +63,17 @@ exports.updateAboutSettings = async (req, res) => {
             return { ...member, image: `/uploads/${memberFile.filename}` };
           }
           return member;
+        });
+      }
+
+      // Handle advisor images
+      if (updates.advisors) {
+        updates.advisors = updates.advisors.map((advisor, index) => {
+          const advisorFile = req.files.find(f => f.fieldname === `advisorImage_${index}`);
+          if (advisorFile) {
+            return { ...advisor, image: `/uploads/${advisorFile.filename}` };
+          }
+          return advisor;
         });
       }
     }

@@ -19,6 +19,10 @@ const memberSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  socialLink: {
+    type: String,
+    default: ''
+  },
 });
 
 const aboutSchema = new mongoose.Schema({
@@ -27,6 +31,7 @@ const aboutSchema = new mongoose.Schema({
     default: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
   },
   members: [memberSchema],
+  advisors: [memberSchema],
 }, { timestamps: true });
 
 module.exports = mongoose.model('About', aboutSchema);

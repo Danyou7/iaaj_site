@@ -22,7 +22,7 @@ export const Jobs: React.FC = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/jobs');
+        const response = await fetch('/api/jobs');
         if (response.ok) {
           const data = await response.json();
           const mappedData = data.map((item: any) => ({
@@ -257,7 +257,7 @@ export const Jobs: React.FC = () => {
             {selectedJob.posterImage && (
               <div className="mb-6 rounded-xl overflow-hidden border border-border-subtle bg-surface-lowest flex justify-center">
                 <img
-                  src={`http://localhost:5000${selectedJob.posterImage}`}
+                  src={`${selectedJob.posterImage}`}
                   alt={`Poster ${selectedJob.title}`}
                   className="w-full h-auto object-contain max-h-[300px]"
                 />

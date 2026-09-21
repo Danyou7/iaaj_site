@@ -22,6 +22,14 @@ const heroSettingSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
+  aboutImage: {
+    type: String,
+    default: ''
+  },
+  careerImage: {
+    type: String,
+    default: ''
+  },
 }, {
   timestamps: true,
 });

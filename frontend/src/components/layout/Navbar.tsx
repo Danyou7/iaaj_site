@@ -17,6 +17,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isAdmin = false }) => {
     { name: t('nav.alumni'), path: '/alumni' },
     { name: t('nav.jobs'), path: '/loker' },
     { name: t('nav.news'), path: '/berita' },
+    { name: t('nav.document'), path: '/perpanjang-dokumen' },
     { name: t('nav.contact'), path: '/hubungi-kami' },
   ];
 

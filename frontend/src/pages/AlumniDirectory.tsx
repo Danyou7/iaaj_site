@@ -33,7 +33,7 @@ export const AlumniDirectory: React.FC = () => {
 
   const fetchAlumni = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/alumni?status=approved');
+      const response = await fetch('/api/alumni?status=approved');
       if (response.ok) {
         const data = await response.json();
         // Map _id from mongo to id for frontend

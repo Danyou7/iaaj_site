@@ -9,7 +9,8 @@ import {
   HeartHandshake, 
   Compass, 
   GraduationCap,
-  ArrowRight
+  ArrowRight,
+  Link as LinkIcon
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -17,22 +18,29 @@ export const About: React.FC = () => {
   const { t } = useLanguage();
   const [historyImage, setHistoryImage] = useState<string>('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80');
   const [members, setMembers] = useState<any[]>([]);
+  const [advisors, setAdvisors] = useState<any[]>([]);
 
   React.useEffect(() => {
-    fetch('http://localhost:5000/api/settings/about')
+    fetch('/api/settings/about')
       .then(res => res.json())
       .then(data => {
         if (data.historyImage) {
           if (data.historyImage.startsWith('http')) {
             setHistoryImage(data.historyImage);
           } else {
-            setHistoryImage(`http://localhost:5000${data.historyImage}`);
+            setHistoryImage(`${data.historyImage}`);
           }
+        }
+        if (data.advisors && data.advisors.length > 0) {
+          setAdvisors(data.advisors.map((m: any) => ({
+            ...m,
+            image: m.image ? (m.image.startsWith('http') ? m.image : `${m.image}`) : ''
+          })));
         }
         if (data.members && data.members.length > 0) {
           setMembers(data.members.map((m: any) => ({
             ...m,
-            image: m.image ? (m.image.startsWith('http') ? m.image : `http://localhost:5000${m.image}`) : ''
+            image: m.image ? (m.image.startsWith('http') ? m.image : `${m.image}`) : ''
           })));
         }
       })
@@ -241,9 +249,68 @@ export const About: React.FC = () => {
                 <p className="text-xs text-on-surface-variant leading-relaxed">
                   {member.description}
                 </p>
+                {member.socialLink && (
+                  <a href={member.socialLink} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-display font-bold text-secondary hover:text-secondary-container transition-colors">
+                    <LinkIcon className="w-3.5 h-3.5" />
+                    <span>Profil Sosial</span>
+                  </a>
+                )}
               </div>
             )) : (
               <p className="text-center col-span-3 text-on-surface-variant">{t('about.board.empty')}</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. STRUKTUR DEWAN PEMBINA */}
+      <section className="py-16 sm:py-20 bg-surface-container-lowest border-t border-border-subtle">
+        <div className="max-w-container-max mx-auto px-4 sm:px-6 md:px-gutter">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-display font-bold text-secondary tracking-widest uppercase mb-1 block">
+              Dewan Pembina
+            </span>
+            <h2 className="text-3xl font-display font-bold text-primary mb-3">
+              Susunan Dewan Pembina
+            </h2>
+            <div className="w-16 h-1 bg-secondary-container mx-auto rounded-full mb-4"></div>
+            <p className="text-on-surface-variant text-base">
+              Tokoh-tokoh pengarah yang senantiasa membimbing langkah strategis ikatan alumni.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {advisors.length > 0 ? advisors.map((advisor, idx) => (
+              <div
+                key={idx}
+                className="bg-surface rounded-2xl border border-border-subtle overflow-hidden text-center hover-lift p-6 shadow-level1"
+              >
+                <img
+                  src={advisor.image}
+                  alt={advisor.name}
+                  className="w-28 h-28 rounded-full object-cover mx-auto mb-4 border-4 border-white shadow-md"
+                />
+                <span className="px-3 py-1 rounded-full text-xs font-display font-semibold bg-secondary-container text-primary inline-block mb-2">
+                  {advisor.role}
+                </span>
+                <h3 className="font-display font-bold text-primary text-lg mb-1">
+                  {advisor.name}
+                </h3>
+                <p className="text-xs text-outline mb-3 font-semibold">
+                  {t('about.board.period')} {advisor.period}
+                </p>
+                <p className="text-xs text-on-surface-variant leading-relaxed">
+                  {advisor.description}
+                </p>
+                {advisor.socialLink && (
+                  <a href={advisor.socialLink} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-display font-bold text-secondary hover:text-secondary-container transition-colors">
+                    <LinkIcon className="w-3.5 h-3.5" />
+                    <span>Profil Sosial</span>
+                  </a>
+                )}
+              </div>
+            )) : (
+              <p className="text-center col-span-3 text-on-surface-variant">Belum ada data dewan pembina.</p>
             )}
           </div>
         </div>

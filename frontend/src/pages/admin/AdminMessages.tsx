@@ -41,8 +41,8 @@ export const AdminMessages: React.FC = () => {
     setLoading(true);
     try {
       const [msgRes, alumniRes] = await Promise.all([
-        fetch('http://localhost:5000/api/messages', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/alumni?status=pending', { headers: { Authorization: `Bearer ${token}` } })
+        fetch('/api/messages', { headers: { Authorization: `Bearer ${token}` } }),
+        fetch('/api/alumni?status=pending', { headers: { Authorization: `Bearer ${token}` } })
       ]);
       
       if (msgRes.ok) {
@@ -62,7 +62,7 @@ export const AdminMessages: React.FC = () => {
 
   const toggleRead = async (id: string, currentStatus: boolean) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const response = await fetch(`/api/messages/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export const AdminMessages: React.FC = () => {
   const handleDeleteMessage = async (id: string) => {
     if (confirm('Hapus pesan ini?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/messages/${id}`, {
+        const response = await fetch(`/api/messages/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -105,7 +105,7 @@ export const AdminMessages: React.FC = () => {
   const handleDeleteAlumni = async (id: string) => {
     if (confirm('Hapus data pendaftaran ini?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/alumni/${id}`, {
+        const response = await fetch(`/api/alumni/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -125,7 +125,7 @@ export const AdminMessages: React.FC = () => {
   const handleApproveAlumni = async (id: string) => {
     if (confirm('Setujui pendaftaran ini agar masuk ke Data Alumni?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/alumni/${id}`, {
+        const response = await fetch(`/api/alumni/${id}`, {
           method: 'PUT',
           headers: { 
             'Content-Type': 'application/json',

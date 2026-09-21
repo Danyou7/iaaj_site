@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext } from 'react';
+import type { ReactNode } from 'react';
 
 type Language = 'id' | 'en';
 
@@ -16,6 +17,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.jobs': 'Loker',
     'nav.news': 'Berita',
     'nav.contact': 'Hubungi Kami',
+    'nav.document': 'Perpanjang Dokumen',
     'lang.id': 'Indonesia (ID)',
     'lang.en': 'Inggris (EN)',
     'bahasa': 'Bahasa',
@@ -65,7 +67,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.mission.li2': 'Mendukung kemajuan riset, inovasi, dan akreditasi internasional almamater.',
     'about.mission.li3': 'Menyalurkan beasiswa dan bimbingan karir bagi generasi muda mahasiswa.',
     'about.board.badge': 'Kepengurusan',
-    'about.board.title': 'Dewan Pengurus Pusat Periode 2024 - 2028',
+    'about.board.title': 'Dewan Pengurus',
     'about.board.desc': 'Membimbing organisasi menuju era transformasi digital dan sinergi alumni yang berkelanjutan.',
     'about.board.period': 'Masa Bakti',
     'about.board.empty': 'Belum ada data pengurus yang ditambahkan.',
@@ -185,6 +187,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.jobs': 'Jobs',
     'nav.news': 'News',
     'nav.contact': 'Contact Us',
+    'nav.document': 'Document Extension',
     'lang.id': 'Indonesian (ID)',
     'lang.en': 'English (EN)',
     'bahasa': 'Language',
@@ -234,7 +237,7 @@ const translations: Record<Language, Record<string, string>> = {
     'about.mission.li2': 'Support the advancement of research, innovation, and international accreditation of the alma mater.',
     'about.mission.li3': 'Provide scholarships and career guidance for young students.',
     'about.board.badge': 'Management',
-    'about.board.title': 'Central Executive Board Period 2024 - 2028',
+    'about.board.title': 'Board of Directors',
     'about.board.desc': 'Guiding the organization towards an era of digital transformation and sustainable alumni synergy.',
     'about.board.period': 'Term of Office',
     'about.board.empty': 'No management data added yet.',
